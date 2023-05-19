@@ -1,0 +1,168 @@
+
+#include <iostream>
+using namespace std;
+
+class Player {
+public:
+    string playerName;
+    char playerID;
+};
+
+class Board {
+public:
+    static const int ROWS = 6;
+    static const int COLS = 7;
+    char board[ROWS][COLS];
+
+    Board() {
+        // Initialize the board with empty spaces
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                board[row][col] = ' ';
+            }
+        }
+    }
+
+    bool dropToken(int col, char token) {
+        // Check if the column is within the valid range
+        if (col < 0 || col >= COLS) {
+            return false;
+        }
+
+        // Find the first empty row in the specified column
+        for (int row = ROWS - 1; row >= 0; row--) {
+            if (board[row][col] == ' ') {
+                board[row][col] = token;
+                return true;
+            }
+        }
+
+        // Column is full
+        return false;
+    }
+
+    bool checkWin(char token) {
+        // Check horizontal
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col <= COLS - 4; col++) {
+                if (board[row][col] == token && board[row][col + 1] == token &&
+                    board[row][col + 2] == token && board[row][col + 3] == token) {
+                    return true;
+                }
+            }
+        }
+
+        // Check vertical
+        for (int row = 0; row <= ROWS - 4; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (board[row][col] == token && board[row + 1][col] == token &&
+                    board[row + 2][col] == token && board[row + 3][col] == token) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonal (top-left to bottom-right)
+        for (int row = 0; row <= ROWS - 4; row++) {
+            for (int col = 0; col <= COLS - 4; col++) {
+                if (board[row][col] == token && board[row + 1][col + 1] == token &&
+                    board[row + 2][col + 2] == token && board[row + 3][col + 3] == token) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonal (top-right to bottom-left)
+        for (int row = 0; row <= ROWS - 4; row++) {
+            for (int col = 3; col < COLS; col++) {
+                if (board[row][col] == token && board[row + 1][col - 1] == token &&
+                    board[row + 2][col - 2] == token && board[row + 3][col - 3] == token) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    bool isBoardFull() {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (board[row][col] == ' ') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
+
+class Grid {
+public:
+    static const int MAX_PLAYERS = 2;
+    Player players[MAX_PLAYERS];
+    Board board;
+
+    Grid() {
+        // Initialize players
+        players[0].playerName = "Player 1";
+        players[0].playerID = 'X';
+        players[1].playerName = "Player 2";
+        players[1].playerID = 'O';
+    }
+
+    void displayBoard() {
+        cout << "-----------------------------" << endl;
+        for (int row = 0; row < Board::ROWS; row++) {
+            cout << "| ";
+            for (int col = 0; col < Board::COLS; col++) {
+                cout << board.board[row][col] << " | ";
+            }
+            cout << endl << "-----------------------------" << endl;
+        }
+        cout << "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |" << endl;
+        cout << "-----------------------------" << endl;
+    }
+
+    void startGame() {
+        int currentPlayer = 0;
+        bool gameOver = false;
+
+        while (!gameOver) {
+            displayBoard();
+
+            int selectedColumn;
+            cout << players[currentPlayer].playerName << ", enter the column number to drop your token: ";
+            cin >> selectedColumn;
+            selectedColumn--;  // Adjust column number to 0-based index
+
+            // Check if the selected column is valid and drop the token
+            if (board.dropToken(selectedColumn, players[currentPlayer].playerID)) {
+                // Check if the current player wins
+                if (board.checkWin(players[currentPlayer].playerID)) {
+                    displayBoard();
+                    cout << players[currentPlayer].playerName << " wins!" << endl;
+                    gameOver = true;
+                }
+                // Check if the board is full and it's a draw
+                else if (board.isBoardFull()) {
+                    displayBoard();
+                    cout << "It's a draw!" << endl;
+                    gameOver = true;
+                }
+                // Switch to the next player
+                currentPlayer = (currentPlayer + 1) % MAX_PLAYERS;
+            }
+            else {
+                cout << "Invalid column. Please try again." << endl;
+            }
+        }
+    }
+};
+
+int main() {
+    Grid grid;
+    grid.startGame();
+
+    return 0;
+}
