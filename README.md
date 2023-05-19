@@ -8,7 +8,7 @@ Implementation Details:
 The Connect 4 game is implemented in C++. The game utilizes the following programming concepts:
 Requirements gathering: The first step is to gather and define the requirements for the Connect 4 game. This involves understanding the desired functionality, user interactions, and any specific features or constraints. Clear requirements help guide the development process and ensure that the final implementation meets the intended goals.
 Design and architecture: Before writing code, it's important to plan the overall design and architecture of the Connect 4 game. This includes deciding on the structure of the code, the organization of functions or classes, and the relationships between different components. A well-designed architecture promotes modularity, extensibility, and maintainability of the codebase.
-Data structures: I'll need to represent the game board and track the state of each cell. One common approach is to use a two-dimensional array or a matrix to represent the game board. Each cell can be represented by a value, such as '*' for an empty cell, 'X' for player 1's piece, and 'O' for player 2's piece.
+Data structures: I'll need to represent the game board and track the state of each cell. One common approach is to use a two-dimensional array or a matrix to represent the game board. Each cell can be represented by a value, such as '|_|' for an empty cell, 'X' for player 1's piece, and 'O' for player 2's piece.
 Loops and conditionals: I'll use loops and conditionals to iterate through the game board, check for win conditions, validate user inputs, and handle game flow. For example, I'll use loops to check for four consecutive pieces in a row, column, or diagonal, and conditionals to determine if a move is valid or if a player has won.
 
 Instructions for Interacting with the System:
@@ -32,7 +32,7 @@ The game board is updated accordingly, and after each move, the updated board is
 The game continues until a player wins or the game board is completely filled.
 
 End of Game:
-If a player connects four of their own pieces, the game will display a win message and ask if you want to end the game or continue.
+If a player connects four of their own pieces, the game will display a win message terminates.
 If the game board is completely filled without a winner, the game ends in a draw.
 Additional Notes:
 Error handling is implemented to validate user inputs and handle invalid moves gracefully.
